@@ -14,19 +14,21 @@ public class BanPvPPlugin extends Plugin{
     @Override
     public void init(){
         Events.on(EventType.WorldLoadEvent.class, e -> {
-            if(Vars.headless){
-                if(Vars.state.rules.pvp){
-                    Groups.player.each(p -> p.sendMessage("FUCK THE PVP"));
+            Time.runTask(60f, () -> {
+                if(Vars.headless){
+                    if(Vars.state.rules.pvp){
+                        Groups.player.each(p -> p.sendMessage("FUCK THE PVP"));
 
-                    Groups.build.each(b -> Time.run(Mathf.random(60, 600), b::kill));
-                    Groups.unit.each(b -> Time.run(Mathf.random(60, 600), b::kill));
-                    Time.run(600f, () -> {
-                        Logic.updateGameOver(Team.derelict);
-                    });
+                        Groups.build.each(b -> Time.run(Mathf.random(60, 600), b::kill));
+                        Groups.unit.each(b -> Time.run(Mathf.random(60, 600), b::kill));
+                        Time.run(600f, () -> {
+                            Logic.updateGameOver(Team.derelict);
+                        });
 
-                    Vars.maps.removeMap(Vars.state.map);
+                        Vars.maps.removeMap(Vars.state.map);
+                    }
                 }
-            }
+            });
         });
     }
 }
